@@ -21,19 +21,30 @@ class Bag:
             self.contents.add((count, bag))
 
     def find_containers(self, bag_dict: dict[Bag]):
-        containers = self.contents
-        for bag in [bag for count, bag in self.contents]:
-            containers.add(bag.find_containers(dict))
-        return containers
+        bags = []
+        for key in bag_dict:
+            if key==self.name:
+                bags+=(bag_dict[key])
+                for bag in bag_dict[key]:
+                    bags+=bag.find_containers(bag_dict)
+        return set(bags)
+
+    def find_contents(self, bag_dict: dict[Bag]):
+        total=0
+        for count, name in self.contents:
+            total+=count
+            total+=count*bag_dict[name].find_contents(bag_dict)
+            
+        return total
 
     def __str__(self):
         string = 'name: ' + self.name
-        # if len(self.contents) > 0:
-        #     string += ' {'
-        #     for count, name in self.contents:
-        #         string += str(count) + ': ' + name + ', '
-        #     string = string[0:len(string)-2]
-        #     string += '}'
+        if len(self.contents) > 0:
+            string += ' {'
+            for count, name in self.contents:
+                string += str(count) + ': ' + name + ', '
+            string = string[0:len(string)-2]
+            string += '}'
         return string
 
     def __repr__(self):
