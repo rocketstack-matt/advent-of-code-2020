@@ -45,18 +45,15 @@ class Console:
 
     def update_instruction(self, instruction_to_swap:int) -> bool:
         if self.program[instruction_to_swap].operation=='acc':
-            # print('acc instruction, no action')
             return False
         elif self.program[instruction_to_swap].operation=='jmp':
             self.program[instruction_to_swap].operation='nop'
-            # print('flip jpm to nop')
             return True
         else:
             if self.program[instruction_to_swap].argument==0:
                 return False
 
             self.program[instruction_to_swap].operation='jmp'
-            # print('flip nop to jmp')
             return True
 
     def execute(self, instruction_to_swap:int) -> bool:
